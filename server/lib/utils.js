@@ -7,9 +7,6 @@ module.exports = {
     function2() {
         return 'Sean is the greatest'
     },
-    func1() {
-        return 'Sean'
-    },
     func3(str, cb) {
         cb(str)
     },
