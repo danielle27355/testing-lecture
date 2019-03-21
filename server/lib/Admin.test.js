@@ -8,7 +8,7 @@ describe('Unit Tests', () => {
         it('Should fetch admin data from the db', () => {
             const fakeDB = {
                 query: sinon.mock().withArgs(
-                    sinon.match.string
+                    "select * from admins where id=1"
                 )
             }
             return AdminData.getAdmin(fakeDB)
@@ -16,16 +16,21 @@ describe('Unit Tests', () => {
     })
     describe('Create admin', () => {
         it('Should send admin data to the db', () => {
-            const fakeDB = {
-                query: sinon.mock().withArgs(
-                    sinon.match.string
-                )
-            }
             const admin = {
                 username: 'Sean Parmar',
                 email: 'sean.parmar@yahoo.com',
-                created_at: new Date(),
-                photos: 'https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=2364333683593240&height=50&width=50&ext=1542583011&hash=AeTN0SqI2Za8SBuz'
+                photo: 'https://s3.amazonaws.com/michaelkerr-projectmedia/BZQJlHb.jpg'
+            }
+            const fakeDB = {
+                query: sinon.mock().withArgs(
+                    "insert into admins(username, email, photo) values (${username}, ${email}, ${photo}) returning *;",
+                    sinon.match({
+                        username: admin.username,
+                        email: admin.email,
+                        photo: admin.photo,
+                        created_at: sinon.match.date
+                    })
+                )
             }
             return AdminData.createAdmin(fakeDB, admin)
         })
@@ -35,32 +40,37 @@ describe('Unit Tests', () => {
 // Integration Tests
 describe('Integration Tests', () => {
     let db;
-    function clearDb() { return db.query('delete from reviews') }
+    function clearDb() { return db.query('delete from admins') }
     beforeAll(() => {
         return testDB.initDb().then(database => {
             return db = database
-        })
-    })
-    describe('Get Admin', () => {
-        it('Should get admin data from db', () => {
-            return AdminData.getAdmin(db).then(admin => {
-                expect(admin.length).not.toEqual(0);
-                expect(admin[0]).toMatchObject({
-                    id: expect.any(Number),
-                    username: expect.any(String),
-                    email: expect.any(String),
-                    photos: expect.any(String),
-                    created_at: expect.any(Date)
-                });
-            })
-        })
-    })
+        });
+    });
+
+    beforeEach(() => {
+        return clearDb();
+    });
+
+    // describe('Get Admin', () => {
+    //     it('Should get admin data from db', () => {
+    //         return AdminData.getAdmin(db).then(admin => {
+    //             expect(admin.length).not.toEqual(0);
+    //             expect(admin[0]).toMatchObject({
+    //                 id: expect.any(Number),
+    //                 username: expect.any(String),
+    //                 email: expect.any(String),
+    //                 photo: expect.any(String),
+    //                 created_at: expect.any(Date)
+    //             });
+    //         })
+    //     })
+    // })
     describe('Create Admin', () => {
         it('Should create an admin in db', () => {
             const admin = {
                 username: 'Sean Parmar',
                 email: 'sean.parmar@yahoo.com',
-                photos: 'https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=2364333683593240&height=50&width=50&ext=1542583011&hash=AeTN0SqI2Za8SBuz'
+                photo: 'https://s3.amazonaws.com/michaelkerr-projectmedia/BZQJlHb.jpg'
             }
             return AdminData.createAdmin(db, admin).then(createdAdmin => {
                 expect(createdAdmin.length).not.toEqual(0);
@@ -68,7 +78,7 @@ describe('Integration Tests', () => {
                     id: expect.any(Number),
                     username: expect.any(String),
                     email: expect.any(String),
-                    photos: expect.any(String),
+                    photo: expect.any(String),
                     created_at: expect.any(Date)
                 });
             })

@@ -5,7 +5,7 @@ const sinon = require('sinon');
 describe('utils', () => {
     describe('function1', () => {
         it('returns 2', () => {
-            expect(utils.function1()).toEqual(2)
+            expect(utils.function1(2, 4)).toEqual(6)
         })
     }),
         describe('function 2', () => {
@@ -25,12 +25,15 @@ describe('utils', () => {
         }),
         describe('getInternetData', () => {
             it('returns an array of people', () => {
+                // Stubs fake functionality so our system believes everything is working.  Not actually hitting server
                 sinon.stub(axios, 'get').returns(Promise.resolve({
                     data: {
                         results: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
                     }
                 }))
                 return utils.getInternetData().then(people => {
+                    // console.log(people);
+
                     expect(people.length).toEqual(10)
                 })
             })

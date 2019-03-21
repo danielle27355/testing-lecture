@@ -3,10 +3,11 @@ module.exports = {
         return db.query("select * from admins where id=1")
     },
     createAdmin: (db, admin) => {
-        return db.query("insert into admins(username, email, photos) values (${username}, ${email}, ${photos}) returning *;", {
+        return db.query("insert into admins(username, email, photo) values (${username}, ${email}, ${photo}) returning *;", {
             username: admin.username,
             email: admin.email,
-            photos: admin.photos
+            photo: admin.photo,
+            created_at: new Date()
         })
     }
 }
