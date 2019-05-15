@@ -5,7 +5,7 @@ const authFuncs = require('./authController');
 
 describe('Integration tests', () => {
     let db;
-    function clearDb() { return db.query('delete from admins') }
+    function clearDb() { return db.query('delete from users') }
     beforeAll(() => {
         return testDB.initDb().then(database => {
             return db = database
