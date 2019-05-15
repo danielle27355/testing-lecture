@@ -12,9 +12,9 @@ export default function Header() {
 
     // Login
     const login = () => {
-        axios.post('/user/login', { username: username.value, password: password.value }).then(user => {
-            setUser(user.data);
-        }).catch(err => setMessage('Invalid username or password'))
+        // axios.post('/user/login', { username: username.value, password: password.value }).then(user => {
+        //     setUser(user.data);
+        // }).catch(err => setMessage('Invalid username or password'))
     }
 
   return (
