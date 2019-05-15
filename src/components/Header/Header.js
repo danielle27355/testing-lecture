@@ -3,7 +3,7 @@ import { useFormInput } from '../../Hooks/Hooks';
 import axios from 'axios';
 import './_Header.scss';
 
-export default function Header() {
+ function Header() {
     // Initialize user & set it to an empty object
     const [user, setUser] = useState({});
     const [message, setMessage] = useState('');
@@ -12,10 +12,11 @@ export default function Header() {
 
     // Login
     const login = () => {
-        axios.post('/user/login', { username: username.value, password: password.value }).then(user => {
-            setUser(user.data);
-        }).catch(err => setMessage('Invalid username or password'))
+        // axios.post('/user/login', { username: username.value, password: password.value }).then(user => {
+        //     setUser(user.data);
+        // }).catch(err => setMessage('Invalid username or password'))
     }
+
 
   return (
     <header>
@@ -33,3 +34,5 @@ export default function Header() {
     </header>
   )
 }
+
+export default Header;
