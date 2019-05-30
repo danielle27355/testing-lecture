@@ -18,7 +18,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "jest --watch server/",
+    "test": "react-scripts test",
+    "integration-test": "jest --watch server/",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

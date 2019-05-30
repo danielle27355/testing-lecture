@@ -1,9 +1,12 @@
 module.exports = {
-    register: (req, res) => {
-        console.log('Register Hit', req.body)
+    register: (db, user) => {
+        return db.query('insert into users(username, password) values(${username}, ${password}) returning *;',{
+            username: user.username,
+            password: user.password
+        })
     },
     login: (req, res) => {
-        const db = req.app.get("db");
+        
         
     }
 }
